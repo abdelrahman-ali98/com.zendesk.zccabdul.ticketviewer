@@ -1,0 +1,15 @@
+namespace com.zendesk.zccabdul.ticketviewer.controller;
+
+class TOTicket
+{
+  Integer requester;
+  Integer id;
+   subject;
+   description;
+  status;
+  createdAt;
+  *--* TOTag tags;
+}
+class TOTag {
+  String tag;
+}

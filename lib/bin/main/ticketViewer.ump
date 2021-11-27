@@ -1,0 +1,19 @@
+namespace com.zendesk.zccabdul.ticketviewer.model;
+class TicketViewer {
+  1 <@>- * Ticket tickets;
+  1 <@>- * Tag tags;
+}
+class Ticket {
+  
+  Integer requesterId;
+  Integer assigneeId;
+  Integer id;
+  subject;
+  description;
+  status;
+  createdAt;
+  *--* Tag;
+}
+class Tag {
+  unique name;
+}
