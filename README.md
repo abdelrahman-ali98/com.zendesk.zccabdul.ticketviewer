@@ -8,3 +8,4 @@ To be able to run this app
 <br />4- This app uses HTTP requests not cUrl, make sure to have the right token, check this website https://reqbin.com/req/java/c-w7oitglz/convert-curl-to-http-request 
 to convert cUrl to Http request
 <br />5- For further details, feel free to contact me 
+<br />6- Do not generate umple code, its already generated. If you do, you will get a compilation error. Umple files are there for references.
