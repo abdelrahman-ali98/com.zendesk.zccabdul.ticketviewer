@@ -53,9 +53,11 @@ public class ViewTicketsController {
 		overviewTable.getColumns().add(createTableColumn("Requester", "requester"));		
 		overviewTable.getColumns().add(createTableColumn("Subject", "subject"));		
 		overviewTable.getColumns().add(createTableColumn("Status", "status"));
+		
 		totalTickets.setText(" Tickets");
 		errorLabel.setTextFill(Color.RED);
-		// overview table if a refreshable element
+		
+		// overview table if a refreshable element, would be a nice feature
 		overviewTable.addEventHandler(TicketsViewerFxmlView.REFRESH_EVENT, event -> {
 			try {
 				overviewTable.setItems(getNextTickets());
@@ -63,12 +65,12 @@ public class ViewTicketsController {
 				errorLabel.setText(e.getMessage());
 			}
 		});
-		previousButton.setDisable(true);
+		previousButton.setDisable(true);				//Disable previous button when we start the app since no  tickets 
 				
-		overviewTable.setOnMouseClicked( event -> {
+		overviewTable.setOnMouseClicked( event -> {		// Trigger ticket selection
 			System.out.println(overviewTable.getSelectionModel().getSelectedItem().getId());
 		
-			if (descriptionText != null)
+			if (descriptionText != null)				//make sure the selected row is not empty
 			descriptionText.setText(TicketViewerController.getTicketDescription(overviewTable.getSelectionModel().getSelectedItem().getId()));
 		});
 		// register refreshable nodes
@@ -102,6 +104,13 @@ public class ViewTicketsController {
 		column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
 		return column;
 	}
+	
+	/**
+	 * This method to load the next page if any
+	 * 
+	 * @author AbdelrahmanAli
+	 * @param event
+	 */
 	@FXML
 	public void loadNextPage(ActionEvent event) {
 		errorLabel.setText("");
@@ -109,7 +118,6 @@ public class ViewTicketsController {
 		try {
 			tickets = getNextTickets();
 		} catch (Exception e) {
-			System.out.println("should change label for error");
 			errorLabel.setText(e.getMessage());
 		}
 		if (tickets == null || tickets.size() == 0) {
@@ -119,39 +127,46 @@ public class ViewTicketsController {
 			return;
 		}
 		if (tickets.size() < 25)
-			nextButton.setDisable(true);
+			nextButton.setDisable(true);	//Disable next Button since we do not have next
+		
 		overviewTable.setItems(tickets);
 		previousButton.setDisable(false);
-		System.out.println("load next clicked");
+		
 		totalTickets.setText(TicketViewerController.getTotalNumOfTickets() + " Tickets");
 	}
-	// Event Listener on Button.onAction
+	
+
+	/**
+	 * This method to load the previous page 
+	 * 
+	 * @author AbdelrahmanAli
+	 * @param event
+	 */
 	@FXML
 	public void loadPreviousPage(ActionEvent event) {
+		errorLabel.setText("");
+		
 		ObservableList<TOTicket> tickets= null;
 		try {
 			tickets = getPreviousTickets();
 		} catch (Exception e) {
 			totalTickets.setText(e.getMessage());
-			System.out.println("should change label for error");
 		}
+		
 		if (tickets == null || tickets.size() == 0) {
-			System.out.println("This is the very begining");
 			nextButton.setText("next");
-			previousButton.setDisable(true);
-			nextButton.setDisable(false);
+			previousButton.setDisable(true);			// Disable previous button since we don't have anymore
+			nextButton.setDisable(false);				//Enable Next page
 			return;
 		}
 		overviewTable.setItems(tickets);
-		nextButton.setDisable(false);
-		System.out.println("load previous clicked");
+		nextButton.setDisable(false);					// If we were able to get previous tickets, means we have next
 		totalTickets.setText(TicketViewerController.getTotalNumOfTickets() + " Tickets");
 	}
 	private ObservableList<TOTicket> getPreviousTickets() throws Exception {
 		List<TOTicket> assignments = null;
 		try {
 		assignments = TicketViewerController.getPreviousTickets();
-		System.out.println("should change label for error");
 		}catch(Exception e) {
 			throw new Exception(e.getMessage());
 		}
