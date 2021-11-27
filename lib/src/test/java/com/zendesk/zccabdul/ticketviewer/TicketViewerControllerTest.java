@@ -71,7 +71,6 @@ public class TicketViewerControllerTest {
         assertEquals( 1, ticket.getId());
         assertEquals("open", ticket.getStatus());
         assertEquals("Sample ticket: Meet the ticket", ticket.getSubject());
-        assertEquals(3,ticket.getTags().size());
 
     }
 }

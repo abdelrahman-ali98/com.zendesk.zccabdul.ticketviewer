@@ -32,9 +32,9 @@ public class TicketViewerController {
 	private static String nextPage = "https://" + DOMAIN + ".zendesk.com/api/v2/tickets.json";
 
 	private static int numOfTotalTicketsDowloaded = 0;
-	private static int numOfTotalTickets = 0; // Total num on the cloud
-	private static int nextTicket = 0; // next ticket to be displayed
-	private static int previousTicket = 0; // last ticket in last page
+	private static int numOfTotalTickets = 0; 				// Total num on the cloud
+	private static int nextTicket = 0; 						// next ticket to be displayed
+	private static int previousTicket = 0; 					// last ticket in last page
 
 	/**
 	 * This method will download some tickets from the server
@@ -83,7 +83,6 @@ public class TicketViewerController {
 				JSONObject jsonObject = new JSONObject(rawTickets);
 
 				nextPage = jsonObject.get("next_page") == null ? "" : jsonObject.get("next_page").toString();
-				System.out.println("got next page");
 
 				JSONArray result = new JSONArray(jsonObject.get("tickets").toString());
 				for (int i = 0; i < result.length(); i++) {
@@ -93,7 +92,6 @@ public class TicketViewerController {
 				}
 				parseTickets(tickets);
 			} catch (Exception e) {
-				System.out.println("error in first one");
 				throw new Exception("Failed fetching tickets");
 			}
 
