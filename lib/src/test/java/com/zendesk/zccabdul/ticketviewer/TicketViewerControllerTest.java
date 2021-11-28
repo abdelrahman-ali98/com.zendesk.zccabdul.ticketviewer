@@ -2,8 +2,7 @@ package com.zendesk.zccabdul.ticketviewer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.zendesk.zccabdul.ticketviewer.application.TicketViewerApplication;
@@ -16,16 +15,37 @@ public class TicketViewerControllerTest {
 
 	private static TicketViewer ticketViewer = TicketViewerApplication.getTicketViewer();
 
-	@BeforeAll
-	  public static void setUpOnce() {
-		//Nothing to be setup for all methods
-	  }
-
 	  @BeforeEach
 	  public void setUp() {
 		  ticketViewer.delete();		//delete all data in the application
 	  }
 
+	  
+	  @Test 
+	  public void testAddTicket() {
+		  // Add a ticket to ticketViewer model layer using the controller
+		  TicketViewerController.addTicket(32
+				  ,25
+				  ,567844
+				  , "My fav company is Zendesk"
+				  ,"Zendesk hiring process was a nice experience for me"
+				  ,"closed"
+				  , "01-01-2001"
+				  ,new String[] {"tag1", "tag2"});
+		 
+		  // check using model method if was added successfully
+		  // 
+		  assertEquals( 1, ticketViewer.getTickets().size());
+		  assertEquals( "My fav company is Zendesk", ticketViewer.getTicket(0).getSubject());
+		  assertEquals( "Zendesk hiring process was a nice experience for me", ticketViewer.getTicket(0).getDescription());
+		  assertEquals( "closed", ticketViewer.getTicket(0).getStatus());
+		  assertEquals(2 , ticketViewer.getTicket(0).getTags().size());
+		  assertEquals( "tag1", ticketViewer.getTicket(0).getTag(0).getName());
+		  assertEquals( "tag2", ticketViewer.getTicket(0).getTag(1).getName()); 
+
+	  }
+	  
+	  
 	/**
 	 * @author AbdelrahmanAli
 	 */
@@ -73,4 +93,5 @@ public class TicketViewerControllerTest {
         assertEquals("Sample ticket: Meet the ticket", ticket.getSubject());
 
     }
+	
 }

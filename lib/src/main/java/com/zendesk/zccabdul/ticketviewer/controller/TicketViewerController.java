@@ -124,23 +124,48 @@ public class TicketViewerController {
 				String description = jsonObject.getString("description");
 				String status = jsonObject.getString("status");
 				String created_at = jsonObject.getString("created_at");
-				Ticket ticket = new Ticket(requester_id, assignee_id, id, subject, description, status, created_at,
-						ticketViewer);
+				
+				addTicket(requester_id, assignee_id, id, subject, description, status, created_at,
+						jsonObject.getNames(jsonObject));
 
-				String[] tags = jsonObject.getNames(jsonObject);
-
-				for (String tag : tags) {
-					Tag toAddTag = Tag.getWithName(tag);
-					if (toAddTag == null)
-						toAddTag = new Tag(tag, ticketViewer);
-
-					ticket.addTag(toAddTag);
-				}
+				
 			} catch (Exception e) {
 				throw new Exception("Failed parsing tickets");
 			}
 		}
 
+	}
+	
+	/**
+	 * This method to add a new ticket to the system locally 
+	 * not on the cloud database
+	 * 
+	 * This method should be private but I made it public for unit testing
+	 * 
+	 * @author AbdelrahmanAli
+	 * @param requester_id
+	 * @param assignee_id
+	 * @param id
+	 * @param subject
+	 * @param description
+	 * @param status
+	 * @param created_at
+	 * @param tags
+	 */
+	public static void addTicket(long requester_id,long assignee_id, long id, String subject,String description
+			, String status, String created_at, String[] tags) {
+		TicketViewer ticketViewer = TicketViewerApplication.getTicketViewer();
+		
+		Ticket ticket = new Ticket(requester_id, assignee_id, id, subject, description, status, created_at,
+				ticketViewer);
+
+		for (String tag : tags) {
+			Tag toAddTag = Tag.getWithName(tag);
+			if (toAddTag == null)
+				toAddTag = new Tag(tag, ticketViewer);
+
+			ticket.addTag(toAddTag);
+		}
 	}
 
 	/**
@@ -314,7 +339,7 @@ public class TicketViewerController {
 	 */
 	public static int getTotalNumOfTickets() {
 		return numOfTotalTickets;
-	}
+	}	
 
 	/**
 	 * This method to check Internet connectivity
